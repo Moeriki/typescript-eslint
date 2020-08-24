@@ -692,149 +692,164 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        let foo = 'a';
-        const _foo = 1;
-        interface Foo {}
-        class Bar {}
-        function foo_function_bar() {}
+        declare const doPascalCase: boolean;
+        declare const doesPascalCase: boolean;
       `,
+      parserOptions,
       options: [
         {
-          selector: 'default',
-          format: ['camelCase'],
-          custom: {
-            regex: /^unused_\w/.source,
-            match: false,
-          },
-          leadingUnderscore: 'allow',
-        },
-        {
-          selector: 'typeLike',
+          selector: 'variable',
+          types: ['boolean'],
           format: ['PascalCase'],
-          custom: {
-            regex: /^I[A-Z]/.source,
-            match: false,
-          },
-        },
-        {
-          selector: 'function',
-          format: ['snake_case'],
-          custom: {
-            regex: /_function_/.source,
-            match: true,
-          },
-          leadingUnderscore: 'allow',
+          prefix: ['do', 'does'],
         },
       ],
     },
-    {
-      code: `
-        let foo = 'a';
-        const _foo = 1;
-        interface foo {}
-        class bar {}
-        function fooFunctionBar() {}
-        function _fooFunctionBar() {}
-      `,
-      options: [
-        {
-          selector: ['default', 'typeLike', 'function'],
-          format: ['camelCase'],
-          custom: {
-            regex: /^unused_\w/.source,
-            match: false,
-          },
-          leadingUnderscore: 'allow',
-        },
-      ],
-    },
-    {
-      code: `
-        const match = 'test'.match(/test/);
-        const [, key, value] = match;
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-        },
-      ],
-    },
-    // no format selector
-    {
-      code: 'const snake_case = 1;',
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-        },
-        {
-          selector: 'variable',
-          format: null,
-        },
-      ],
-    },
-    {
-      code: 'const snake_case = 1;',
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-        },
-        {
-          selector: 'variable',
-          format: [],
-        },
-      ],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1478
-    {
-      code: `
-        const child_process = require('child_process');
-      `,
-      options: [
-        { selector: 'variable', format: ['camelCase', 'UPPER_CASE'] },
-        {
-          selector: 'variable',
-          format: ['snake_case'],
-          filter: 'child_process',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          'Property-Name': 'asdf',
-        };
-      `,
-      options: [
-        {
-          format: ['strictCamelCase'],
-          selector: 'default',
-          filter: {
-            regex: /-/.source,
-            match: false,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          'Property-Name': 'asdf',
-        };
-      `,
-      options: [
-        {
-          format: ['strictCamelCase'],
-          selector: 'default',
-          filter: {
-            regex: /^(Property-Name)$/.source,
-            match: false,
-          },
-        },
-      ],
-    },
+    // {
+    //   code: `
+    //     let foo = 'a';
+    //     const _foo = 1;
+    //     interface Foo {}
+    //     class Bar {}
+    //     function foo_function_bar() {}
+    //   `,
+    //   options: [
+    //     {
+    //       selector: 'default',
+    //       format: ['camelCase'],
+    //       custom: {
+    //         regex: /^unused_\w/.source,
+    //         match: false,
+    //       },
+    //       leadingUnderscore: 'allow',
+    //     },
+    //     {
+    //       selector: 'typeLike',
+    //       format: ['PascalCase'],
+    //       custom: {
+    //         regex: /^I[A-Z]/.source,
+    //         match: false,
+    //       },
+    //     },
+    //     {
+    //       selector: 'function',
+    //       format: ['snake_case'],
+    //       custom: {
+    //         regex: /_function_/.source,
+    //         match: true,
+    //       },
+    //       leadingUnderscore: 'allow',
+    //     },
+    //   ],
+    // },
+    // {
+    //   code: `
+    //     let foo = 'a';
+    //     const _foo = 1;
+    //     interface foo {}
+    //     class bar {}
+    //     function fooFunctionBar() {}
+    //     function _fooFunctionBar() {}
+    //   `,
+    //   options: [
+    //     {
+    //       selector: ['default', 'typeLike', 'function'],
+    //       format: ['camelCase'],
+    //       custom: {
+    //         regex: /^unused_\w/.source,
+    //         match: false,
+    //       },
+    //       leadingUnderscore: 'allow',
+    //     },
+    //   ],
+    // },
+    // {
+    //   code: `
+    //     const match = 'test'.match(/test/);
+    //     const [, key, value] = match;
+    //   `,
+    //   options: [
+    //     {
+    //       selector: 'default',
+    //       format: ['camelCase'],
+    //     },
+    //   ],
+    // },
+    // // no format selector
+    // {
+    //   code: 'const snake_case = 1;',
+    //   options: [
+    //     {
+    //       selector: 'default',
+    //       format: ['camelCase'],
+    //     },
+    //     {
+    //       selector: 'variable',
+    //       format: null,
+    //     },
+    //   ],
+    // },
+    // {
+    //   code: 'const snake_case = 1;',
+    //   options: [
+    //     {
+    //       selector: 'default',
+    //       format: ['camelCase'],
+    //     },
+    //     {
+    //       selector: 'variable',
+    //       format: [],
+    //     },
+    //   ],
+    // },
+    // // https://github.com/typescript-eslint/typescript-eslint/issues/1478
+    // {
+    //   code: `
+    //     const child_process = require('child_process');
+    //   `,
+    //   options: [
+    //     { selector: 'variable', format: ['camelCase', 'UPPER_CASE'] },
+    //     {
+    //       selector: 'variable',
+    //       format: ['snake_case'],
+    //       filter: 'child_process',
+    //     },
+    //   ],
+    // },
+    // {
+    //   code: `
+    //     const foo = {
+    //       'Property-Name': 'asdf',
+    //     };
+    //   `,
+    //   options: [
+    //     {
+    //       format: ['strictCamelCase'],
+    //       selector: 'default',
+    //       filter: {
+    //         regex: /-/.source,
+    //         match: false,
+    //       },
+    //     },
+    //   ],
+    // },
+    // {
+    //   code: `
+    //     const foo = {
+    //       'Property-Name': 'asdf',
+    //     };
+    //   `,
+    //   options: [
+    //     {
+    //       format: ['strictCamelCase'],
+    //       selector: 'default',
+    //       filter: {
+    //         regex: /^(Property-Name)$/.source,
+    //         match: false,
+    //       },
+    //     },
+    //   ],
+    // },
   ],
   invalid: [
     {
@@ -842,329 +857,329 @@ ruleTester.run('naming-convention', rule, {
       code: 'const x_x = 1;',
       errors: [{ messageId: 'doesNotMatchFormat' }],
     },
-    {
-      // make sure we handle empty options and apply defaults
-      code: 'const x_x = 1;',
-      options: [],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
-    },
-    ...createInvalidTestCases(cases),
-    {
-      code: `
-        const child_process = require('child_process');
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-          filter: {
-            regex: 'child_process',
-            match: true,
-          },
-        },
-      ],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
-    },
-    {
-      code: `
-        declare const any_camelCase01: any;
-        declare const any_camelCase02: any | null;
-        declare const any_camelCase03: any | null | undefined;
+    // {
+    //   // make sure we handle empty options and apply defaults
+    //   code: 'const x_x = 1;',
+    //   options: [],
+    //   errors: [{ messageId: 'doesNotMatchFormat' }],
+    // },
+    // ...createInvalidTestCases(cases),
+    // {
+    //   code: `
+    //     const child_process = require('child_process');
+    //   `,
+    //   parserOptions,
+    //   options: [
+    //     {
+    //       selector: 'default',
+    //       format: ['camelCase'],
+    //       filter: {
+    //         regex: 'child_process',
+    //         match: true,
+    //       },
+    //     },
+    //   ],
+    //   errors: [{ messageId: 'doesNotMatchFormat' }],
+    // },
+    // {
+    //   code: `
+    //     declare const any_camelCase01: any;
+    //     declare const any_camelCase02: any | null;
+    //     declare const any_camelCase03: any | null | undefined;
 
-        declare const string_camelCase01: string;
-        declare const string_camelCase02: string | null;
-        declare const string_camelCase03: string | null | undefined;
-        declare const string_camelCase04: 'a' | null | undefined;
-        declare const string_camelCase05: string | 'a' | null | undefined;
+    //     declare const string_camelCase01: string;
+    //     declare const string_camelCase02: string | null;
+    //     declare const string_camelCase03: string | null | undefined;
+    //     declare const string_camelCase04: 'a' | null | undefined;
+    //     declare const string_camelCase05: string | 'a' | null | undefined;
 
-        declare const number_camelCase06: number;
-        declare const number_camelCase07: number | null;
-        declare const number_camelCase08: number | null | undefined;
-        declare const number_camelCase09: 1 | null | undefined;
-        declare const number_camelCase10: number | 2 | null | undefined;
+    //     declare const number_camelCase06: number;
+    //     declare const number_camelCase07: number | null;
+    //     declare const number_camelCase08: number | null | undefined;
+    //     declare const number_camelCase09: 1 | null | undefined;
+    //     declare const number_camelCase10: number | 2 | null | undefined;
 
-        declare const boolean_camelCase11: boolean;
-        declare const boolean_camelCase12: boolean | null;
-        declare const boolean_camelCase13: boolean | null | undefined;
-        declare const boolean_camelCase14: true | null | undefined;
-        declare const boolean_camelCase15: false | null | undefined;
-        declare const boolean_camelCase16: true | false | null | undefined;
-      `,
-      options: [
-        {
-          selector: 'variable',
-          modifiers: ['const'],
-          format: ['UPPER_CASE'],
-          prefix: ['any_'],
-        },
-        {
-          selector: 'variable',
-          types: ['string'],
-          format: ['snake_case'],
-          prefix: ['string_'],
-        },
-        {
-          selector: 'variable',
-          types: ['number'],
-          format: ['snake_case'],
-          prefix: ['number_'],
-        },
-        {
-          selector: 'variable',
-          types: ['boolean'],
-          format: ['snake_case'],
-          prefix: ['boolean_'],
-        },
-      ],
-      parserOptions,
-      errors: Array(19).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
-    },
-    {
-      code: `
-        declare const function_camelCase1: () => void;
-        declare const function_camelCase2: (() => void) | null;
-        declare const function_camelCase3: (() => void) | null | undefined;
-        declare const function_camelCase4:
-          | (() => void)
-          | (() => string)
-          | null
-          | undefined;
-      `,
-      options: [
-        {
-          selector: 'variable',
-          types: ['function'],
-          format: ['snake_case'],
-          prefix: ['function_'],
-        },
-      ],
-      parserOptions,
-      errors: Array(4).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
-    },
-    {
-      code: `
-        declare const array_camelCase1: Array<number>;
-        declare const array_camelCase2: ReadonlyArray<number> | null;
-        declare const array_camelCase3: number[] | null | undefined;
-        declare const array_camelCase4: readonly number[] | null | undefined;
-        declare const array_camelCase5:
-          | number[]
-          | (number | string)[]
-          | null
-          | undefined;
-        declare const array_camelCase6: [] | null | undefined;
-        declare const array_camelCase7: [number] | null | undefined;
+    //     declare const boolean_camelCase11: boolean;
+    //     declare const boolean_camelCase12: boolean | null;
+    //     declare const boolean_camelCase13: boolean | null | undefined;
+    //     declare const boolean_camelCase14: true | null | undefined;
+    //     declare const boolean_camelCase15: false | null | undefined;
+    //     declare const boolean_camelCase16: true | false | null | undefined;
+    //   `,
+    //   options: [
+    //     {
+    //       selector: 'variable',
+    //       modifiers: ['const'],
+    //       format: ['UPPER_CASE'],
+    //       prefix: ['any_'],
+    //     },
+    //     {
+    //       selector: 'variable',
+    //       types: ['string'],
+    //       format: ['snake_case'],
+    //       prefix: ['string_'],
+    //     },
+    //     {
+    //       selector: 'variable',
+    //       types: ['number'],
+    //       format: ['snake_case'],
+    //       prefix: ['number_'],
+    //     },
+    //     {
+    //       selector: 'variable',
+    //       types: ['boolean'],
+    //       format: ['snake_case'],
+    //       prefix: ['boolean_'],
+    //     },
+    //   ],
+    //   parserOptions,
+    //   errors: Array(19).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+    // },
+    // {
+    //   code: `
+    //     declare const function_camelCase1: () => void;
+    //     declare const function_camelCase2: (() => void) | null;
+    //     declare const function_camelCase3: (() => void) | null | undefined;
+    //     declare const function_camelCase4:
+    //       | (() => void)
+    //       | (() => string)
+    //       | null
+    //       | undefined;
+    //   `,
+    //   options: [
+    //     {
+    //       selector: 'variable',
+    //       types: ['function'],
+    //       format: ['snake_case'],
+    //       prefix: ['function_'],
+    //     },
+    //   ],
+    //   parserOptions,
+    //   errors: Array(4).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+    // },
+    // {
+    //   code: `
+    //     declare const array_camelCase1: Array<number>;
+    //     declare const array_camelCase2: ReadonlyArray<number> | null;
+    //     declare const array_camelCase3: number[] | null | undefined;
+    //     declare const array_camelCase4: readonly number[] | null | undefined;
+    //     declare const array_camelCase5:
+    //       | number[]
+    //       | (number | string)[]
+    //       | null
+    //       | undefined;
+    //     declare const array_camelCase6: [] | null | undefined;
+    //     declare const array_camelCase7: [number] | null | undefined;
 
-        declare const array_camelCase8:
-          | readonly number[]
-          | Array<string>
-          | [boolean]
-          | null
-          | undefined;
-      `,
-      options: [
-        {
-          selector: 'variable',
-          types: ['array'],
-          format: ['snake_case'],
-          prefix: ['array_'],
-        },
-      ],
-      parserOptions,
-      errors: Array(8).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
-    },
-    {
-      code: `
-        let unused_foo = 'a';
-        const _unused_foo = 1;
-        interface IFoo {}
-        class IBar {}
-        function fooBar() {}
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['snake_case'],
-          custom: {
-            regex: /^unused_\w/.source,
-            match: false,
-          },
-          leadingUnderscore: 'allow',
-        },
-        {
-          selector: 'typeLike',
-          format: ['PascalCase'],
-          custom: {
-            regex: /^I[A-Z]/.source,
-            match: false,
-          },
-        },
-        {
-          selector: 'function',
-          format: ['camelCase'],
-          custom: {
-            regex: /function/.source,
-            match: true,
-          },
-          leadingUnderscore: 'allow',
-        },
-      ],
-      errors: [
-        {
-          messageId: 'satisfyCustom',
-          line: 2,
-          data: {
-            type: 'Variable',
-            name: 'unused_foo',
-            regex: '/^unused_\\w/u',
-            regexMatch: 'not match',
-          },
-        },
-        {
-          messageId: 'satisfyCustom',
-          line: 3,
-          data: {
-            type: 'Variable',
-            name: '_unused_foo',
-            regex: '/^unused_\\w/u',
-            regexMatch: 'not match',
-          },
-        },
-        {
-          messageId: 'satisfyCustom',
-          line: 4,
-          data: {
-            type: 'Interface',
-            name: 'IFoo',
-            regex: '/^I[A-Z]/u',
-            regexMatch: 'not match',
-          },
-        },
-        {
-          messageId: 'satisfyCustom',
-          line: 5,
-          data: {
-            type: 'Class',
-            name: 'IBar',
-            regex: '/^I[A-Z]/u',
-            regexMatch: 'not match',
-          },
-        },
-        {
-          messageId: 'satisfyCustom',
-          line: 6,
-          data: {
-            type: 'Function',
-            name: 'fooBar',
-            regex: '/function/u',
-            regexMatch: 'match',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-        let unused_foo = 'a';
-        const _unused_foo = 1;
-        function foo_bar() {}
-        interface IFoo {}
-        class IBar {}
-      `,
-      options: [
-        {
-          selector: ['variable', 'function'],
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-        },
-        {
-          selector: ['class', 'interface'],
-          format: ['PascalCase'],
-          custom: {
-            regex: /^I[A-Z]/.source,
-            match: false,
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'doesNotMatchFormat',
-          line: 2,
-          data: {
-            type: 'Variable',
-            name: 'unused_foo',
-            formats: 'camelCase',
-          },
-        },
-        {
-          messageId: 'doesNotMatchFormatTrimmed',
-          line: 3,
-          data: {
-            type: 'Variable',
-            name: '_unused_foo',
-            processedName: 'unused_foo',
-            formats: 'camelCase',
-          },
-        },
-        {
-          messageId: 'doesNotMatchFormat',
-          line: 4,
-          data: {
-            type: 'Function',
-            name: 'foo_bar',
-            formats: 'camelCase',
-          },
-        },
-        {
-          messageId: 'satisfyCustom',
-          line: 5,
-          data: {
-            type: 'Interface',
-            name: 'IFoo',
-            regex: '/^I[A-Z]/u',
-            regexMatch: 'not match',
-          },
-        },
-        {
-          messageId: 'satisfyCustom',
-          line: 6,
-          data: {
-            type: 'Class',
-            name: 'IBar',
-            regex: '/^I[A-Z]/u',
-            regexMatch: 'not match',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          'Property Name': 'asdf',
-        };
-      `,
-      options: [
-        {
-          format: ['strictCamelCase'],
-          selector: 'default',
-          filter: {
-            regex: /-/.source,
-            match: false,
-          },
-        },
-      ],
-      errors: [
-        {
-          line: 3,
-          messageId: 'doesNotMatchFormat',
-          data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-            type: 'Property',
-            name: 'Property Name',
-            formats: 'strictCamelCase',
-          },
-        },
-      ],
-    },
+    //     declare const array_camelCase8:
+    //       | readonly number[]
+    //       | Array<string>
+    //       | [boolean]
+    //       | null
+    //       | undefined;
+    //   `,
+    //   options: [
+    //     {
+    //       selector: 'variable',
+    //       types: ['array'],
+    //       format: ['snake_case'],
+    //       prefix: ['array_'],
+    //     },
+    //   ],
+    //   parserOptions,
+    //   errors: Array(8).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+    // },
+    // {
+    //   code: `
+    //     let unused_foo = 'a';
+    //     const _unused_foo = 1;
+    //     interface IFoo {}
+    //     class IBar {}
+    //     function fooBar() {}
+    //   `,
+    //   options: [
+    //     {
+    //       selector: 'default',
+    //       format: ['snake_case'],
+    //       custom: {
+    //         regex: /^unused_\w/.source,
+    //         match: false,
+    //       },
+    //       leadingUnderscore: 'allow',
+    //     },
+    //     {
+    //       selector: 'typeLike',
+    //       format: ['PascalCase'],
+    //       custom: {
+    //         regex: /^I[A-Z]/.source,
+    //         match: false,
+    //       },
+    //     },
+    //     {
+    //       selector: 'function',
+    //       format: ['camelCase'],
+    //       custom: {
+    //         regex: /function/.source,
+    //         match: true,
+    //       },
+    //       leadingUnderscore: 'allow',
+    //     },
+    //   ],
+    //   errors: [
+    //     {
+    //       messageId: 'satisfyCustom',
+    //       line: 2,
+    //       data: {
+    //         type: 'Variable',
+    //         name: 'unused_foo',
+    //         regex: '/^unused_\\w/u',
+    //         regexMatch: 'not match',
+    //       },
+    //     },
+    //     {
+    //       messageId: 'satisfyCustom',
+    //       line: 3,
+    //       data: {
+    //         type: 'Variable',
+    //         name: '_unused_foo',
+    //         regex: '/^unused_\\w/u',
+    //         regexMatch: 'not match',
+    //       },
+    //     },
+    //     {
+    //       messageId: 'satisfyCustom',
+    //       line: 4,
+    //       data: {
+    //         type: 'Interface',
+    //         name: 'IFoo',
+    //         regex: '/^I[A-Z]/u',
+    //         regexMatch: 'not match',
+    //       },
+    //     },
+    //     {
+    //       messageId: 'satisfyCustom',
+    //       line: 5,
+    //       data: {
+    //         type: 'Class',
+    //         name: 'IBar',
+    //         regex: '/^I[A-Z]/u',
+    //         regexMatch: 'not match',
+    //       },
+    //     },
+    //     {
+    //       messageId: 'satisfyCustom',
+    //       line: 6,
+    //       data: {
+    //         type: 'Function',
+    //         name: 'fooBar',
+    //         regex: '/function/u',
+    //         regexMatch: 'match',
+    //       },
+    //     },
+    //   ],
+    // },
+    // {
+    //   code: `
+    //     let unused_foo = 'a';
+    //     const _unused_foo = 1;
+    //     function foo_bar() {}
+    //     interface IFoo {}
+    //     class IBar {}
+    //   `,
+    //   options: [
+    //     {
+    //       selector: ['variable', 'function'],
+    //       format: ['camelCase'],
+    //       leadingUnderscore: 'allow',
+    //     },
+    //     {
+    //       selector: ['class', 'interface'],
+    //       format: ['PascalCase'],
+    //       custom: {
+    //         regex: /^I[A-Z]/.source,
+    //         match: false,
+    //       },
+    //     },
+    //   ],
+    //   errors: [
+    //     {
+    //       messageId: 'doesNotMatchFormat',
+    //       line: 2,
+    //       data: {
+    //         type: 'Variable',
+    //         name: 'unused_foo',
+    //         formats: 'camelCase',
+    //       },
+    //     },
+    //     {
+    //       messageId: 'doesNotMatchFormatTrimmed',
+    //       line: 3,
+    //       data: {
+    //         type: 'Variable',
+    //         name: '_unused_foo',
+    //         processedName: 'unused_foo',
+    //         formats: 'camelCase',
+    //       },
+    //     },
+    //     {
+    //       messageId: 'doesNotMatchFormat',
+    //       line: 4,
+    //       data: {
+    //         type: 'Function',
+    //         name: 'foo_bar',
+    //         formats: 'camelCase',
+    //       },
+    //     },
+    //     {
+    //       messageId: 'satisfyCustom',
+    //       line: 5,
+    //       data: {
+    //         type: 'Interface',
+    //         name: 'IFoo',
+    //         regex: '/^I[A-Z]/u',
+    //         regexMatch: 'not match',
+    //       },
+    //     },
+    //     {
+    //       messageId: 'satisfyCustom',
+    //       line: 6,
+    //       data: {
+    //         type: 'Class',
+    //         name: 'IBar',
+    //         regex: '/^I[A-Z]/u',
+    //         regexMatch: 'not match',
+    //       },
+    //     },
+    //   ],
+    // },
+    // {
+    //   code: `
+    //     const foo = {
+    //       'Property Name': 'asdf',
+    //     };
+    //   `,
+    //   options: [
+    //     {
+    //       format: ['strictCamelCase'],
+    //       selector: 'default',
+    //       filter: {
+    //         regex: /-/.source,
+    //         match: false,
+    //       },
+    //     },
+    //   ],
+    //   errors: [
+    //     {
+    //       line: 3,
+    //       messageId: 'doesNotMatchFormat',
+    //       data: {
+    //         // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+    //         type: 'Property',
+    //         name: 'Property Name',
+    //         formats: 'strictCamelCase',
+    //       },
+    //     },
+    //   ],
+    // },
   ],
 });
